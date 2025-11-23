@@ -1,62 +1,65 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Random Survey Redirect</title>
+  <meta charset="UTF-8" />
+  <title>Survey Randomizer – Study 3</title>
 </head>
 <body>
-  <p>Redirecting you to the survey…
-    If nothing happens, <a id="fallback" href="#">click here</a>.
-    <noscript>
-      <!-- JS disabled fallback: send to any one form (or list all 4 as links) -->
-      <br>JavaScript is off. Please use one of these:
-      <ul>
-        <li><a href="https://forms.gle/6XYT5hLNVTdbumNT6">Variant 1</a></li>
-        <li><a href="https://forms.gle/kBAYh3RFQ1hFdspF9">Variant 2</a></li>
-        <li><a href="https://forms.gle/Z6f5P7tMcrpQbSoM8">Variant 3</a></li>
-        <li><a href="https://forms.gle/FXdQeJzHfxqeZJacA">Variant 4</a></li>
-        <li><a href="https://forms.gle/31pNP3BGkiY8JLMU6">Variant 4</a></li>
-        <li><a href="https://forms.gle/sb5cvM8ytfvEPuAJ8">Variant 4</a></li>
-        <li><a href="https://forms.gle/VAZ7gja1HGQ6jqr59">Variant 4</a></li>
-        <li><a href="https://forms.gle/LLxu4u5bCMEd4wos6">Variant 4</a></li>
-
-      </ul>
-    </noscript>
+  <p>
+    Redirecting you to the survey…
+    If nothing happens, <a id="manualLink" href="#">click here</a>.
   </p>
 
   <script>
-    (function () {
-      const surveys = [
-        "https://forms.gle/6XYT5hLNVTdbumNT6", // Study 3 - P1FG
-        "https://forms.gle/kBAYh3RFQ1hFdspF9", // Study 3 - P1FL
-        "https://forms.gle/Z6f5P7tMcrpQbSoM8", // Study 3 - P2FG
-        "https://forms.gle/FXdQeJzHfxqeZJacA"  // Study 3 - P2FL
-        "https://forms.gle/31pNP3BGkiY8JLMU6"  // Study 3 - P1MG
-        "https://forms.gle/sb5cvM8ytfvEPuAJ8"  // Study 3 - P1ML
-        "https://forms.gle/VAZ7gja1HGQ6jqr59"  // Study 3 - P2MG
-        "https://forms.gle/LLxu4u5bCMEd4wos6"  // Study 3 - P2ML
-      
-      ];
+    // 🔹 Eight Google Forms – one per condition
 
-      // Stronger randomness when available
-      const rand32 = (window.crypto && window.crypto.getRandomValues)
-        ? window.crypto.getRandomValues(new Uint32Array(1))[0]
-        : Math.floor(Math.random() * 0xFFFFFFFF);
+    const destinations = [
+      {
+        name: "S3-P1FG",
+        url: "https://forms.gle/1ieNqc4VRcU59dYU8"
+      },
+      {
+        name: "S3-P1FL",
+        url: "https://forms.gle/aTYm6tecQuL4YSKfA"
+      },
+      {
+        name: "S3-P2FG",
+        url: "https://forms.gle/rwyxD6fwSCxnku7TA"
+      },
+      {
+        name: "S3-P2FL",
+        url: "https://forms.gle/p5ceKQnjnjkjut3T8"
+      },
+      {
+        name: "S3-P1MG",
+        url: "https://forms.gle/31pNP3BGkiY8JLMU6"
+      },
+      {
+        name: "S3-P1ML",
+        url: "https://forms.gle/sb5cvM8ytfvEPuAJ8"
+      },
+      {
+        name: "S3-P2MG",
+        url: "https://forms.gle/VAZ7gja1HGQ6jqr59"
+      },
+      {
+        name: "S3-P2ML",
+        url: "https://forms.gle/LLxu4u5bCMEd4wos6"
+      }
+    ];
 
-      const i = rand32 % surveys.length;
+    // 🎲 Randomly select one condition
+    const index = Math.floor(Math.random() * destinations.length);
+    const chosen = destinations[index];
 
-      // Optional: tag the variant so you can verify distribution inside Forms
-      const target = surveys[i] + (surveys[i].includes('?') ? '&' : '?') + 'variant=' + (i + 1);
+    // Set fallback “click here” link
+    const manualLink = document.getElementById("manualLink");
+    if (manualLink) {
+      manualLink.href = chosen.url;
+    }
 
-      // Make the visible fallback link match the chosen variant
-      const fallback = document.getElementById('fallback');
-      if (fallback) fallback.href = target;
-
-      // Redirect quickly; replace avoids a "back" to the hub page
-      try { location.replace(target); } catch (_) { location.href = target; }
-      // Extra safety: force navigation if replace is blocked
-      setTimeout(() => { location.href = target; }, 500);
-    })();
+    // Auto-redirect to selected form
+    window.location.replace(chosen.url);
   </script>
 </body>
 </html>
